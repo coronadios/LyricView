@@ -1,0 +1,121 @@
+Metadata-Version: 2.4
+Name: lyricview
+Version: 0.1.0
+Summary: A flexible open-source lyric viewer framework for web players, apps, and custom experiences.
+Author-email: Corona <corona@local.dev>
+License: MIT
+Keywords: lyrics,music,viewer,player,theme,cli
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Classifier: Topic :: Multimedia :: Sound/Audio
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# LyricView
+
+LyricView is an open-source lyric viewer built to be reusable across web players, desktop apps, embedded interfaces, and custom music experiences. It is designed to be simple to adapt, easy to theme, and flexible enough for new developer projects.
+
+Created by Corona (CoronaDios on GitHub), and released under the MIT license.
+
+## Why LyricView
+
+- Open source and permissive MIT license
+- Works as a native desktop app and as a reusable Python library
+- Theme system with built-in visual profiles
+- CLI-first workflow for quick visual tests
+- Compatible with custom application integrations and web-based frontends
+
+## Project goals
+
+- Offer a clean lyric viewer system without locking developers into a single platform
+- Keep the core logic separated from the visual layer
+- Allow theme selection via `.env` or via CLI arguments
+- Support fast demos with a test mode and sample lyric file
+
+## Installation
+
+From the project root:
+
+```bash
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install -e .
+```
+
+After installation, the CLI command will be available as `lv`.
+
+## Native command examples
+
+```bash
+lv -test --file "lyric-test.txt"
+lv -test --file "lyric-test.txt" --theme:aurora
+lv --file "custom-lyrics.txt" --theme:sunset
+```
+
+System-level PATH installation:
+
+```bash
+chmod +x scripts/install-path.sh
+sudo ./scripts/install-path.sh
+```
+
+## Theme system
+
+Theme selection can be done in two ways:
+
+1. In `.env` by uncommenting a value:
+
+```env
+# LYRICVIEW_THEME=minimal
+# LYRICVIEW_THEME=aurora
+LYRICVIEW_THEME=midnight
+```
+
+2. Directly in the CLI:
+
+```bash
+lv --theme:glass
+lv --theme:sunset
+```
+
+The built-in themes are intentionally stylized in a modern streaming-panel direction without using protected product names. They are designed to be adapted and customized by developers.
+
+## .env example
+
+A sample environment file is included at `.env.example`.
+
+```bash
+cp .env.example .env
+```
+
+Then uncomment the theme you want to use.
+
+## Library usage
+
+```python
+from lyricview.cli import build_parser
+from lyricview.themes import get_theme
+
+parser = build_parser()
+args = parser.parse_args(["-test", "--file", "lyric-test.txt", "--theme:aurora"])
+print(args.theme)
+print(get_theme(args.theme))
+```
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
+
+## Demo lyric file
+
+The sample lyric file included in the project is:
+
+- [lyric-test.txt](lyric-test.txt)
+
+## Notes
+
+This project intentionally avoids using commercial product names such as Apple Music or Spotify in styling or branding. Instead, it draws inspiration from the motion and mood of modern streaming interfaces while keeping the implementation generic and reusable.

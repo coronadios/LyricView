@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+    <meta property="og:title" content="Core Engine | LyricView Docs" />
+    <meta property="og:image" content="./assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Core Engine | LyricView Docs</title>
+    <style>
+      :root {
+        --bg: #000000;
+        --panel: rgba(255,255,255,0.03);
+        --text: #f5f5f5;
+        --muted: #b5b5b5;
+        --soft: #8a8a8a;
+        --border: rgba(255,255,255,0.12);
+        --code-bg: rgba(255,255,255,0.02);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); font-family: Inter, "Segoe UI", sans-serif; }
+      body { line-height: 1.6; scrollbar-color: rgba(255,255,255,0.28) rgba(255,255,255,0.03); }
+      body::-webkit-scrollbar { width: 12px; height: 12px; }
+      body::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+      body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.22); border-radius: 999px; border: 2px solid rgba(0,0,0,0.75); }
+      a { color: inherit; }
+      .shell { display: grid; grid-template-columns: 260px minmax(0, 1fr); min-height: 100vh; }
+      .sidebar { position: sticky; top: 0; height: 100vh; padding: 28px 20px 22px; background: rgba(255,255,255,0.01); border-right: 1px solid var(--border); }
+      .brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 30px; font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; }
+      .brand-logo { width: 22px; height: 22px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2); }
+      .brand-mark { width: 7px; height: 7px; border-radius: 50%; background: var(--text); display: inline-block; }
+      nav { display: flex; flex-direction: column; gap: 8px; }
+      nav a { display: block; padding: 10px 12px; border-radius: 10px; color: var(--muted); text-decoration: none; }
+      nav a.active, nav a:hover { background: var(--panel); color: var(--text); }
+      .sidebar-footer { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border); color: var(--soft); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+      .content { padding: 56px 48px 96px; }
+      .wrap { max-width: 1024px; margin: 0 auto; }
+      .article { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 28px; padding: 32px 36px; }
+      .backlog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-top: 20px; }
+      .backlog-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 18px; padding: 20px; }
+      .backlog-box h3 { margin: 0 0 10px; font-size: 1rem; }
+      .backlog-box ul { margin: 10px 0 0; padding-left: 1rem; }
+      .backlog-box li, .backlog-box p { color: var(--muted); }
+      h1 { margin: 0 0 16px; font-size: clamp(2.2rem, 4vw, 3.5rem); letter-spacing: -0.05em; }
+      h2 { margin-top: 30px; margin-bottom: 12px; font-size: clamp(1.5rem, 2vw, 2.1rem); letter-spacing: -0.04em; }
+      p, li { color: var(--muted); }
+      ul { padding-left: 1.2rem; }
+      pre { margin-top: 20px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 18px; padding: 18px 20px; overflow: auto; color: #f3f3f3; }
+      code { font-family: "SFMono-Regular", Consolas, monospace; }
+      @media (max-width: 960px) {
+        .shell { grid-template-columns: 1fr; }
+        .sidebar {
+          position: relative;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+          padding: 18px 14px 12px;
+        }
+        nav {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        nav a { flex: 1 1 calc(50% - 8px); min-width: 120px; text-align: center; }
+        .content { padding: 28px 18px 52px; }
+        .article { padding: 22px 18px; }
+      }
+      @media (max-width: 640px) {
+        .brand { margin-bottom: 16px; font-size: 0.72rem; letter-spacing: 0.12em; }
+        h1 { font-size: clamp(2.1rem, 12vw, 3rem); }
+        h2 { font-size: clamp(1.3rem, 8vw, 1.9rem); }
+        pre { padding: 14px 12px; font-size: 0.82rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand"><img class="brand-logo" src="./assets/icon-128.png" alt="LyricView icon" /><span>LyricView</span></div>
+        <nav>
+          <a href="index.html">Overview</a>
+          <a href="architecture.html">Architecture</a>
+          <a href="engine.html" class="active">Core Engine</a>
+          <a href="motion.html">Motion</a>
+          <a href="parsers.html">Parsers</a>
+          <a href="api.html">API</a>
+        </nav>
+        <div class="sidebar-footer">Documentation</div>
+      </aside>
+      <main class="content">
+        <div class="wrap">
+          <article class="article">
+            <h1>Core Engine</h1>
+            <p>The engine is the source of truth for timing, active line resolution, and lifecycle notifications.</p>
+
+            <pre><code>engine = LyricEngine(song)
+engine.play()
+engine.seek(24.0)
+state = engine.tick()
+</code></pre>
+
+            <h2>Responsibilities</h2>
+            <ul>
+              <li>Load song data</li>
+              <li>Dispatch events like linechange and wordchange</li>
+              <li>Resolve active line and active word</li>
+              <li>Apply play, pause, seek, and rate changes</li>
+              <li>Keep renderer state deterministic</li>
+            </ul>
+
+            <h2>Event model</h2>
+            <p>Events stay renderer-agnostic. The UI listens for state changes while the engine owns the authoritative timeline.</p>
+            <pre><code>engine.on("linechange", callback)
+engine.on("wordchange", callback)
+engine.on("progress", callback)</code></pre>
+
+            <h2>Typical lifecycle</h2>
+            <p>At runtime, the workflow is simple: load the source data, normalize it into the internal model, resolve the active state for the current time, and emit the progress payload received by renderers or external integrations.</p>
+            <p>This makes it easy to test the engine in isolation, validate timing behavior with unit tests, and then connect it to a UI or a custom visual layer without changing the core rules.</p>
+
+            <h2>Backlog opportunities</h2>
+            <div class="backlog-grid">
+              <div class="backlog-box">
+                <h3>Timing</h3>
+                <ul>
+                  <li>Precise seek behavior</li>
+                  <li>Drift correction</li>
+                  <li>Multiple rate modes</li>
+                  <li>Loop and section repeat</li>
+                </ul>
+              </div>
+              <div class="backlog-box">
+                <h3>Inputs</h3>
+                <ul>
+                  <li>More parser formats</li>
+                  <li>Cleaner validation</li>
+                  <li>More debug metadata</li>
+                  <li>Better import compatibility</li>
+                </ul>
+              </div>
+              <div class="backlog-box">
+                <h3>Reliability</h3>
+                <ul>
+                  <li>More regression tests</li>
+                  <li>Stable event contract</li>
+                  <li>Isolation of render state</li>
+                  <li>Safer contributor changes</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+lyricview/__init__.py
+lyricview/__main__.py
+lyricview/app.py
+lyricview/cli.py
+lyricview/config.py
+lyricview/themes.py
+lyricview.egg-info/PKG-INFO
+lyricview.egg-info/SOURCES.txt
+lyricview.egg-info/dependency_links.txt
+lyricview.egg-info/entry_points.txt
+lyricview.egg-info/top_level.txt
+tests/test_cli.py

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+    <meta property="og:title" content="LyricView Docs" />
+    <meta property="og:description" content="Engine-first, data-driven lyric system for motion-aware synchronized text experiences." />
+    <meta property="og:image" content="./assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>LyricView Docs</title>
+    <style>
+      :root {
+        --bg: #000000;
+        --panel: rgba(255, 255, 255, 0.03);
+        --panel-strong: rgba(255, 255, 255, 0.06);
+        --text: #f5f5f5;
+        --muted: #b5b5b5;
+        --soft: #8a8a8a;
+        --border: rgba(255, 255, 255, 0.12);
+        --code-bg: rgba(255, 255, 255, 0.02);
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, "Segoe UI", sans-serif;
+        line-height: 1.6;
+        scrollbar-color: rgba(255,255,255,0.28) rgba(255,255,255,0.03);
+      }
+
+      body::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+
+      body::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.02);
+      }
+
+      body::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.22);
+        border-radius: 999px;
+        border: 2px solid rgba(0,0,0,0.75);
+      }
+
+      a { color: inherit; }
+
+      .shell {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 28px 20px 22px;
+        background: rgba(255, 255, 255, 0.01);
+        border-right: 1px solid var(--border);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 30px;
+        font-size: 0.82rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+
+      .brand-logo {
+        width: 22px;
+        height: 22px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+
+      .brand-mark {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--text);
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.3);
+      }
+
+      .hero-banner {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin: 18px 0 0;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.02);
+      }
+
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      nav a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: var(--muted);
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      }
+
+      nav a:hover,
+      nav a.active {
+        background: var(--panel);
+        color: var(--text);
+        transform: translateX(2px);
+      }
+
+      .sidebar-footer {
+        margin-top: 28px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        color: var(--soft);
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .content {
+        padding: 56px 48px 96px;
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .hero {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 28px;
+        padding: 42px 40px 30px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 12px;
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--soft);
+      }
+
+      h1 {
+        margin: 0 0 14px;
+        font-size: clamp(2.7rem, 5vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+        font-weight: 600;
+      }
+
+      .lead {
+        max-width: 760px;
+        margin: 0;
+        font-size: 1.12rem;
+        color: var(--muted);
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(255,255,255,0.02);
+        color: var(--text);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        margin-top: 34px;
+      }
+
+      .card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 24px;
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.1rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .section {
+        margin-top: 40px;
+        border-top: 1px solid var(--border);
+        padding-top: 28px;
+      }
+
+      .concept-grid,
+      .resource-grid,
+      .roadmap-grid,
+      .faq-grid,
+      .backlog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .concept-box,
+      .resource-box,
+      .roadmap-item,
+      .faq-item,
+      .backlog-box {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 20px;
+      }
+
+      .concept-box h3,
+      .resource-box h3,
+      .roadmap-item h3,
+      .faq-item h3,
+      .backlog-box h3 {
+        margin: 0 0 10px;
+        font-size: 1rem;
+      }
+
+      .concept-box p,
+      .resource-box p,
+      .resource-box li,
+      .roadmap-item p,
+      .faq-item p,
+      .faq-item li,
+      .backlog-box li {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .resource-box ul,
+      .faq-item ul,
+      .backlog-box ul {
+        margin: 10px 0 0;
+        padding-left: 1rem;
+      }
+
+      .backlog-box ul {
+        display: block;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: clamp(1.5rem, 2vw, 2rem);
+        letter-spacing: -0.04em;
+      }
+
+      p, li {
+        color: var(--muted);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+
+      pre {
+        margin: 18px 0 0;
+        padding: 18px 20px;
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        overflow: auto;
+        color: #f3f3f3;
+        font-size: 0.94rem;
+      }
+
+      code {
+        font-family: "SFMono-Regular", Consolas, monospace;
+      }
+
+      .status {
+        margin-top: 18px;
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      @media (max-width: 960px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+          padding: 18px 14px 12px;
+        }
+
+        nav {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .content {
+          padding: 28px 18px 52px;
+        }
+
+        .hero {
+          padding: 24px 18px 18px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .brand {
+          margin-bottom: 16px;
+          font-size: 0.72rem;
+          letter-spacing: 0.12em;
+        }
+
+        nav a {
+          flex: 1 1 calc(50% - 8px);
+          min-width: 120px;
+          text-align: center;
+          padding: 10px 8px;
+        }
+
+        .meta {
+          gap: 8px;
+        }
+
+        .chip {
+          font-size: 0.68rem;
+          letter-spacing: 0.08em;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: clamp(2.2rem, 12vw, 3.4rem);
+        }
+
+        .lead {
+          font-size: 1rem;
+        }
+
+        .section {
+          margin-top: 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand"><img class="brand-logo" src="./assets/icon-128.png" alt="LyricView icon" /><span>LyricView</span></div>
+        <nav>
+          <a href="index.html" class="active">Overview</a>
+          <a href="architecture.html">Architecture</a>
+          <a href="engine.html">Core Engine</a>
+          <a href="motion.html">Motion</a>
+          <a href="parsers.html">Parsers</a>
+          <a href="api.html">API</a>
+        </nav>
+        <div class="sidebar-footer">Documentation</div>
+      </aside>
+
+      <main class="content">
+        <div class="wrap">
+          <section class="hero">
+            <img class="hero-banner" src="./assets/banner.png" alt="LyricView banner" />
+            <span class="eyebrow">Engine first</span>
+            <h1>LyricView</h1>
+            <p class="lead">
+              A reusable lyrical engine for timing, state, motion, and deterministic rendering — built to power different lyric experiences without coupling the logic to a specific UI.
+            </p>
+
+            <div class="meta">
+              <span class="chip">Data driven</span>
+              <span class="chip">Deterministic</span>
+              <span class="chip">Extensible</span>
+            </div>
+          </section>
+
+          <div class="grid">
+            <article class="card">
+              <h3>Core model</h3>
+              <p>Song, section, line, word, and syllable structures provide the source of truth for synchronized lyrics.</p>
+            </article>
+            <article class="card">
+              <h3>Time engine</h3>
+              <p>Playback, seek, pause, and progress are computed from a single timeline model.</p>
+            </article>
+            <article class="card">
+              <h3>Motion system</h3>
+              <p>Interpolation, easing, scroll control, and reduced-motion awareness keep movement smooth and predictable.</p>
+            </article>
+            <article class="card">
+              <h3>Parser registry</h3>
+              <p>Plain text, LRC, JSON, and custom extensions plug into the same engine without hardcoded assumptions.</p>
+            </article>
+          </div>
+
+          <section class="section">
+            <h2>What it solves</h2>
+            <ul>
+              <li>Synchronize lyrics by line, word, or syllable.</li>
+              <li>Compute the active state from a timestamp.</li>
+              <li>Drive smooth autoscroll and visual transitions.</li>
+              <li>Keep rendering deterministic and testable.</li>
+              <li>Register custom parsers and plugins without rewriting the core.</li>
+            </ul>
+          </section>
+
+          <section class="section">
+            <h2>Core concept</h2>
+            <div class="concept-grid">
+              <div class="concept-box">
+                <h3>Source model</h3>
+                <p>The lyric hierarchy stays structured as Song → Section → Line → Word → Syllable so timing and rendering can stay predictable.</p>
+              </div>
+              <div class="concept-box">
+                <h3>Time is truth</h3>
+                <p>The engine resolves active lyrics from a single timeline instead of letting the UI calculate motion state by itself.</p>
+              </div>
+              <div class="concept-box">
+                <h3>Renderer is dumb</h3>
+                <p>Visual code consumes state and makes the line appear active, faded, or animated without owning the real logic of the song.</p>
+              </div>
+              <div class="concept-box">
+                <h3>Extensible by design</h3>
+                <p>New parsers, plugins, renderers, and motion behaviors integrate through registered adapters instead of hardcoded branches.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Project map</h2>
+            <div class="resource-grid">
+              <div class="resource-box">
+                <h3>Core runtime</h3>
+                <ul>
+                  <li>engine orchestration</li>
+                  <li>timeline state</li>
+                  <li>event dispatch</li>
+                </ul>
+              </div>
+              <div class="resource-box">
+                <h3>Model layer</h3>
+                <ul>
+                  <li>song and section definitions</li>
+                  <li>line/word/syllable resolution</li>
+                  <li>progress calculations</li>
+                </ul>
+              </div>
+              <div class="resource-box">
+                <h3>Extensibility</h3>
+                <ul>
+                  <li>parsers registry</li>
+                  <li>plugin manager</li>
+                  <li>renderer adapters</li>
+                </ul>
+              </div>
+              <div class="resource-box">
+                <h3>Contributions</h3>
+                <ul>
+                  <li>test new formats</li>
+                  <li>improve motion</li>
+                  <li>add renderers and themes</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Usage</h2>
+            <pre><code>from lyricview.core.engine import LyricEngine
+
+engine = LyricEngine()
+engine.seek(12.5)
+state = engine.tick()
+print(state["visual"]["active_line_index"])</code></pre>
+            <p class="status">Status: engine architecture is in place and verified by tests.</p>
+          </section>
+
+          <section class="section">
+            <h2>Roadmap</h2>
+            <div class="roadmap-grid">
+              <div class="roadmap-item">
+                <h3>Phase 1</h3>
+                <p>Stabilize the engine model, timer logic, and deterministic state updates for active lyrics.</p>
+              </div>
+              <div class="roadmap-item">
+                <h3>Phase 2</h3>
+                <p>Expand parser coverage for more lyric formats and improve validation around malformed or partial inputs.</p>
+              </div>
+              <div class="roadmap-item">
+                <h3>Phase 3</h3>
+                <p>Add more renderer backends and visual themes while keeping the core API stable and interface-agnostic.</p>
+              </div>
+              <div class="roadmap-item">
+                <h3>Phase 4</h3>
+                <p>Lean into community-driven improvements around playback UX, accessibility, and real-world integrations.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Contributing</h2>
+            <p>This project is intentionally structured so contributors can improve the core engine, add new parsers, enhance the motion layer, or build different renderers without rewriting the model. If you want to contribute, the best starting points are the timing engine, parser registry, motion math, and the renderer adapter layer.</p>
+            <div class="resource-grid">
+              <div class="resource-box">
+                <h3>Start here</h3>
+                <ul>
+                  <li>read the engine and model layers</li>
+                  <li>run the tests before changing behavior</li>
+                  <li>keep new logic data-driven and deterministic</li>
+                </ul>
+              </div>
+              <div class="resource-box">
+                <h3>High-value work</h3>
+                <ul>
+                  <li>new parser adapters</li>
+                  <li>motion or scroll improvements</li>
+                  <li>accessibility and reduced-motion support</li>
+                </ul>
+              </div>
+              <div class="resource-box">
+                <h3>Good PRs</h3>
+                <ul>
+                  <li>clear scope</li>
+                  <li>tests for behavior</li>
+                  <li>docs updates when the API changes</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>FAQ</h2>
+            <div class="faq-grid">
+              <div class="faq-item">
+                <h3>Why separate engine and UI?</h3>
+                <p>Because timing and visual state should not be coupled. The engine owns the truth, and the renderer simply reflects it.</p>
+              </div>
+              <div class="faq-item">
+                <h3>Can I add another renderer?</h3>
+                <p>Yes. The renderer layer is designed to consume computed engine state instead of owning business logic.</p>
+              </div>
+              <div class="faq-item">
+                <h3>Is this intended for OSS?</h3>
+                <p>Yes. The project is built with modularity and extensionality in mind so multiple contributors can improve different layers independently.</p>
+              </div>
+              <div class="faq-item">
+                <h3>Where should I begin?</h3>
+                <p>Start with the model and the time engine, then move to parser integration or motion tuning once the core feels familiar.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Backlog</h2>
+            <p>The project is intentionally open-ended. Here is the current list of ideas that would make LyricView stronger, more reusable, and more contributor-friendly.</p>
+            <div class="backlog-grid">
+              <div class="backlog-box">
+                <h3>50 things to add</h3>
+                <ul>
+                  <li>Support for LRC format</li>
+                  <li>Support for VTT lyrics</li>
+                  <li>Support for SRT with timing</li>
+                  <li>JSON structured parser</li>
+                  <li>YAML lyric schema</li>
+                  <li>Inline text timestamp parser</li>
+                  <li>Duet or multiple voices</li>
+                  <li>Word-level timestamps</li>
+                  <li>Syllable-level timestamps</li>
+                  <li>Karaoke mode</li>
+                  <li>Performance mode</li>
+                  <li>Studio mode</li>
+                  <li>Compact mode</li>
+                  <li>Cinema mode</li>
+                  <li>Live mode</li>
+                  <li>Smooth auto-scroll with damping</li>
+                  <li>Section-based scrolling</li>
+                  <li>Word and syllable interpolation</li>
+                  <li>Custom easing presets</li>
+                  <li>Motion presets</li>
+                  <li>Reduced motion support</li>
+                  <li>Light, dark, high-contrast themes</li>
+                  <li>Artist-based theme packs</li>
+                  <li>Tkinter renderer</li>
+                  <li>PyQt renderer</li>
+                  <li>GTK renderer</li>
+                  <li>Web frontend renderer</li>
+                  <li>TUI renderer</li>
+                  <li>React or Next renderer</li>
+                  <li>Mobile renderer exploration</li>
+                  <li>Real audio backend integration</li>
+                  <li>Clock-based sync with music</li>
+                  <li>Playback rate control</li>
+                  <li>Precise seek support</li>
+                  <li>Loop section mode</li>
+                  <li>Live lyric preview</li>
+                  <li>Export state as JSON</li>
+                  <li>Export to LRC</li>
+                  <li>External parser plugins</li>
+                  <li>External renderer plugins</li>
+                  <li>External theme plugins</li>
+                  <li>Lifecycle hooks</li>
+                  <li>Debug overlay</li>
+                  <li>Stable public API</li>
+                  <li>CLI subcommands</li>
+                  <li>Validation commands</li>
+                  <li>File-based lyric playback</li>
+                  <li>Theme configuration files</li>
+                  <li>Performance benchmark suite</li>
+                </ul>
+              </div>
+
+              <div class="backlog-box">
+                <h3>25 things to extend</h3>
+                <ul>
+                  <li>Extend the engine API for real-world use</li>
+                  <li>Extend the parser registry</li>
+                  <li>Extend model metadata</li>
+                  <li>Extend timing with global offsets</li>
+                  <li>Extend scroll physics</li>
+                  <li>Extend the motion system</li>
+                  <li>Extend theme tokens</li>
+                  <li>Extend plugin discovery</li>
+                  <li>Extend the event emitter</li>
+                  <li>Extend CLI output</li>
+                  <li>Extend line styling by word</li>
+                  <li>Extend multilingual support</li>
+                  <li>Extend accessibility labels</li>
+                  <li>Extend edge-case tests</li>
+                  <li>Extend timing validation</li>
+                  <li>Extend renderer visual layers</li>
+                  <li>Extend typography rules</li>
+                  <li>Extend section transitions</li>
+                  <li>Extend beat and phrase modeling</li>
+                  <li>Extend drift handling in playback</li>
+                  <li>Extend render state introspection</li>
+                  <li>Extend export to standard formats</li>
+                  <li>Extend architecture docs</li>
+                  <li>Extend contributor guides</li>
+                  <li>Extend examples and demos</li>
+                  <li>Extend benchmarking and metrics</li>
+                </ul>
+              </div>
+
+              <div class="backlog-box">
+                <h3>10 aesthetic upgrades</h3>
+                <ul>
+                  <li>Improved typography hierarchy</li>
+                  <li>Cleaner title and section spacing</li>
+                  <li>More premium vertical rhythm</li>
+                  <li>Better code block contrast</li>
+                  <li>More editorial sidebar</li>
+                  <li>Subtle hover and motion</li>
+                  <li>Softer microinteractions</li>
+                  <li>More consistent card rhythm</li>
+                  <li>Better visual treatment for long content</li>
+                  <li>Tokenized design system for consistency</li>
+                </ul>
+              </div>
+
+              <div class="backlog-box">
+                <h3>10 bonus ideas</h3>
+                <ul>
+                  <li>Interactive demo website</li>
+                  <li>Renderer gallery</li>
+                  <li>Theme showcase</li>
+                  <li>Visual benchmark page</li>
+                  <li>Before/after motion comparisons</li>
+                  <li>Community example library</li>
+                  <li>Issue and PR templates</li>
+                  <li>Public roadmap</li>
+                  <li>Release notes automation</li>
+                  <li>Docs generation pipeline</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

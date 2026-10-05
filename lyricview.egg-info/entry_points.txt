@@ -1,0 +1,2 @@
+[console_scripts]
+lv = lyricview.cli:main
